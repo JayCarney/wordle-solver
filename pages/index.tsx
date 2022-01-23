@@ -92,7 +92,10 @@ const Home: NextPage = () => {
             disablePortal
             options={words}
             sx={{ width: 300, margin: '0 auto' }}
-            onChange={(event, value) => value && addWord(value)}
+            value=""
+            onChange={(event, value) => {
+              value && addWord(value)
+            }}
             renderInput={(props) => {
               return <TextField {...props} />
             }}
