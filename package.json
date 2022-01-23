@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "export": "next export",
     "build-dict": "node generate-word-json.js"
   },
   "dependencies": {
