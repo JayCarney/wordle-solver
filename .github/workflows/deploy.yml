@@ -20,6 +20,9 @@ jobs:
         run: npm ci
 
       - name: Build my App
+        env:
+          NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
+
         run: npm run build && npm run export && touch ./out/.nojekyll
 
       - name: Deploy 🚀
