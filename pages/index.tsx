@@ -73,13 +73,13 @@ const Home: NextPage = () => {
         {guesses.map((guess, guessNumber) => <Grid item xs={12} key={guessNumber}>
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
             <Stack direction={'row'} spacing={1}>
-              {guess.map((char, charIndex) => <Box key={charIndex} sx={{...stylesForLetter[char.result], width: 62, height: 62, display: 'inline-flex', alignItems: 'center', fontWeight: 'bold', fontSize: '2rem', justifyContent: 'center'}} onClick={() => toggleGuessState(guessNumber, charIndex)}>{char.letter.toLocaleUpperCase()}</Box>)}
+              {guess.map((char, charIndex) => <Box key={charIndex} sx={{...stylesForLetter[char.result], width: 62, height: 62, display: 'inline-flex', alignItems: 'center', cursor: 'pointer', fontWeight: 'bold', fontSize: '2rem', justifyContent: 'center'}} onClick={() => toggleGuessState(guessNumber, charIndex)}>{char.letter.toLocaleUpperCase()}</Box>)}
             </Stack>
           </Box>
         </Grid>)}
         <Grid item xs={12}>
           {guesses.length === 0 && <Typography gutterBottom align="center">No guesses yet, select a word bellow as your first guess</Typography>}
-          {guesses.length !== 0 && <Typography align="center" gutterBottom>Click each letter to cycle through wordle result status (gray, orange, green)</Typography>}
+          {guesses.length !== 0 && <Typography align="center" gutterBottom>Click each letter to cycle through wordle result status (gray, yellow, green)</Typography>}
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1} sx={{marginBottom: 2}}>
