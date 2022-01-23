@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Chip, Container, Grid, Stack, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Chip, Container, Grid, Stack, TextField, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -17,7 +17,7 @@ const lastResult = Object.values(Result).pop()
 
 const stylesForLetter = {
   [Result.Invalid]: {
-    backgroundColor: 'red',
+    backgroundColor: '#3a3a3c',
     color: 'white'
   },
   [Result.Orange]: {
@@ -67,13 +67,19 @@ const Home: NextPage = () => {
       </Head>
 
       <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="h1" align="center">Super Janky Wordle Solver</Typography>
+        </Grid>
         {guesses.map((guess, guessNumber) => <Grid item xs={12} key={guessNumber}>
-          <Stack direction={'row'} spacing={1}>
-            {guess.map((char, charIndex) => <Box key={charIndex} sx={{...stylesForLetter[char.result], width: 20, textAlign: 'center'}} onClick={() => toggleGuessState(guessNumber, charIndex)}>{char.letter}</Box>)}
-          </Stack>
+          <Box sx={{display: 'flex', justifyContent: 'center'}}>
+            <Stack direction={'row'} spacing={1}>
+              {guess.map((char, charIndex) => <Box key={charIndex} sx={{...stylesForLetter[char.result], width: 62, height: 62, display: 'inline-flex', alignItems: 'center', fontWeight: 'bold', fontSize: '2rem', justifyContent: 'center'}} onClick={() => toggleGuessState(guessNumber, charIndex)}>{char.letter.toLocaleUpperCase()}</Box>)}
+            </Stack>
+          </Box>
         </Grid>)}
         <Grid item xs={12}>
-
+          {guesses.length === 0 && <Typography gutterBottom align="center">No guesses yet, select a word bellow as your first guess</Typography>}
+          {guesses.length !== 0 && <Typography align="center" gutterBottom>Click each letter to cycle through wordle result status (gray, orange, green)</Typography>}
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1} sx={{marginBottom: 2}}>
@@ -81,10 +87,11 @@ const Home: NextPage = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
+          {guesses.length === 0 && <Typography align="center" sx={{marginBottom: 2}}>Or type a word if you want to go your own way</Typography>}
           <Autocomplete
             disablePortal
             options={words}
-            sx={{ width: 300 }}
+            sx={{ width: 300, margin: '0 auto' }}
             onChange={(event, value) => value && addWord(value)}
             renderInput={(props) => {
               return <TextField {...props} />
