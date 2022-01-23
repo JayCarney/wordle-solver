@@ -1,5 +1,6 @@
 import { includes } from "ramda"
-import { filterList, includeAtPosition, notInclude, notIncludeAtPosition } from "../utils/filters"
+import { includeAtPosition, notInclude, notIncludeAtPosition } from "../utils/filters"
+import {filterWordList} from '../utils/filter-word-list'
 import { loadWordlist } from "../utils/load-words"
 
 describe('example workflow', () => {
@@ -16,7 +17,7 @@ describe('example workflow', () => {
     if (!words) {
       throw 'Could not load words'
     }
-    words = filterList(words, roundOneFilters)
+    words = filterWordList(words, roundOneFilters)
 
     const roundTwoFilters = [
       notInclude('b'),
@@ -26,7 +27,7 @@ describe('example workflow', () => {
       notIncludeAtPosition('e', 1),
       includeAtPosition('c', 3)
     ]
-    words = filterList(words, roundTwoFilters)
+    words = filterWordList(words, roundTwoFilters)
 
     const roundThreeFilters = [
       notInclude('p'),
@@ -36,7 +37,7 @@ describe('example workflow', () => {
       notIncludeAtPosition('i', 2),
     ]
 
-    words = filterList(words, roundThreeFilters)
+    words = filterWordList(words, roundThreeFilters)
 
     const roundFourFilters = [
       notInclude('m'),
@@ -45,7 +46,7 @@ describe('example workflow', () => {
       includeAtPosition('e', 4)
     ]
 
-    words = filterList(words, roundFourFilters)
+    words = filterWordList(words, roundFourFilters)
     console.log(words)
     expect(Array.isArray(words)).toBeTruthy()
   })

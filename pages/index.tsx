@@ -87,7 +87,6 @@ const Home: NextPage = () => {
             sx={{ width: 300 }}
             onChange={(event, value) => value && addWord(value)}
             renderInput={(props) => {
-              console.log(props)
               return <TextField {...props} />
             }}
           />

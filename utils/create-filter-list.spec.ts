@@ -24,27 +24,30 @@ mockedMaxCharCount.mockImplementation((letter, count, word) => `maxCharCount:${l
 mockedMinCharCount.mockImplementation((letter, count, word) => `minCharCount:${letter}:${count}`)
 
 describe('createFilterList', () => {
+  const extextArraySoftMatch = (arr1: any[], arr2: any[]) => {
+    expect(arr1.sort()).toEqual(arr2.sort())
+  }
   test('returns empty array with empty gusses', () => {
     expect(createFilterList([])).toStrictEqual([])
   })
   test('returns minCharCount for match', () => {
     const guess: Guess = [{letter: 'a', result: Result.Orange}]
-    expect(createFilterList([guess])).toStrictEqual(['minCharCount:a:1', 'notIncludeAtPosition:a:0'])
+    extextArraySoftMatch(createFilterList([guess]), ['minCharCount:a:1', 'notIncludeAtPosition:a:0'])
   })
   test('returns minCharCount of two when valid', () => {
     const guess: Guess = [{letter: 'a', result: Result.Orange}, {letter: 'a', result: Result.Orange}]
-    expect(createFilterList([guess])).toStrictEqual(['minCharCount:a:2', 'notIncludeAtPosition:a:0', 'notIncludeAtPosition:a:1'])
+    extextArraySoftMatch(createFilterList([guess]), ['minCharCount:a:2', 'notIncludeAtPosition:a:0', 'notIncludeAtPosition:a:1'])
   })
   test('creates exclude function for character', () => {
     const guess: Guess = [{letter: 'a', result: Result.Invalid}]
-    expect(createFilterList([guess])).toStrictEqual(['notInclude:a'])
+    extextArraySoftMatch(createFilterList([guess]), ['maxCharCount:a:0'])
   })
   test('creates max character count for character', () => {
     const guess: Guess = [{letter: 'a', result: Result.Invalid}, {letter: 'a', result: Result.Green}]
-    expect(createFilterList([guess])).toStrictEqual(['maxCharCount:a:1', 'includeAtPosition:a:1'])
+    extextArraySoftMatch(createFilterList([guess]), ['maxCharCount:a:1', 'includeAtPosition:a:1'])
   })
   test('handles missplaces second character', () => {
     const guess: Guess = [{letter: 'a', result: Result.Orange}, {letter: 'a', result: Result.Green}]
-    expect(createFilterList([guess])).toEqual(['includeAtPosition:a:1', 'notIncludeAtPosition:a:0', 'minCharCount:a:2'])
+    extextArraySoftMatch(createFilterList([guess]),['includeAtPosition:a:1', 'notIncludeAtPosition:a:0', 'minCharCount:a:2'])
   })
 })
