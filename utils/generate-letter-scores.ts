@@ -1,4 +1,5 @@
 import { Guess } from "./create-guess-from-word";
+import wordleDict from '../wordsDict.json'
 import * as R from 'ramda'
 
 export type ScoreDict = Record<string, number>
@@ -10,8 +11,8 @@ export interface LetterScores {
 const POSITIONAL_POINTS = 2
 const IN_WORD_POINTS = 1
 
-export function generateLetterScrores(wordList: string[], guesses: Guess[] = []): LetterScores {
-  return wordList.reduce((acc, word): LetterScores => {
+export function generateLetterScrores(): LetterScores {
+  return wordleDict.answers.reduce((acc, word): LetterScores => {
     const letterArray = word.split('')
     // positinal score
     letterArray.forEach((letter, index) => {
