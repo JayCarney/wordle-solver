@@ -5,7 +5,7 @@ import { scoreWord } from "./score-word";
 type wordTuple = [number, string]
 
 export function sortWords(words: string[], gusses: Guess[] = []) {
-  const letterScores = generateLetterScrores()
+  const letterScores = generateLetterScrores(words)
   
   return words
     .map((word, index) => {

@@ -11,8 +11,12 @@ export interface LetterScores {
 const POSITIONAL_POINTS = 2
 const IN_WORD_POINTS = 1
 
-export function generateLetterScrores(): LetterScores {
-  return wordleDict.answers.reduce((acc, word): LetterScores => {
+export function generateLetterScrores(availableWords: string[]): LetterScores {
+  return availableWords.reduce((acc, word): LetterScores => {
+    // if (!availableWords.includes(word)) {
+    //   // word already filtered out
+    //   return acc
+    // }
     const letterArray = word.split('')
     // positinal score
     letterArray.forEach((letter, index) => {
