@@ -21,11 +21,11 @@ const stylesForLetter = {
     color: 'white'
   },
   [Result.Orange]: {
-    backgroundColor: 'orange',
+    backgroundColor: '#b59f3b',
     color: 'white'
   },
   [Result.Green]: {
-    backgroundColor: 'green',
+    backgroundColor: '#538d4e',
     color: 'white'
   }
 }
