@@ -62,7 +62,7 @@ const Home: NextPage = () => {
     <Container>
       <Head>
         <title>Super Janky Wordle Solver</title>
-        <meta name="description" content="One day project to cheat at Wordle" />
+        <meta name="description" content="Solve wordle without all the thinking, choose from guesses and get recomended next words" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
