@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Chip, Container, Grid, Stack, TextField, Typography } from "@mui/material";
+import { AppBar, Autocomplete, Box, Button, Chip, Container, Grid, Stack, styled, TextField, Toolbar, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -31,6 +31,37 @@ const stylesForLetter = {
 }
 
 const wordList = sortWords(loadWordlist() ?? [])
+
+const LetterBox = styled(Box)`
+  width: 62px;
+  height: 62px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 2rem;
+  justify-content: center;
+`
+
+const EmptyBox = styled(LetterBox)`
+  border: 2px solid #3a3a3c;
+`
+
+const Row: React.FC<{guess: Guess; onClick: (charIndex: number) => void}> = (props) => {
+  const {guess, onClick} = props
+  if (!guess) {
+    return <Stack direction={'row'} spacing={1}>
+      <EmptyBox />
+      <EmptyBox />
+      <EmptyBox />
+      <EmptyBox />
+      <EmptyBox />
+    </Stack>
+  }
+  return <Stack direction={'row'} spacing={1}>
+  {guess.map((char, charIndex) => <LetterBox key={charIndex} sx={stylesForLetter[char.result]} onClick={() => onClick(charIndex)}>{char.letter.toLocaleUpperCase()}</LetterBox>)}
+</Stack>
+}
 
 
 const Home: NextPage = () => {
@@ -65,16 +96,18 @@ const Home: NextPage = () => {
         <meta name="description" content="Solve wordle without all the thinking, choose from guesses and get recomended next words" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <AppBar position="fixed">
+        <Toolbar variant="dense">
+          <Typography variant="h6" color="inherit" component="h1">
+            Wordle Solver
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Toolbar/>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <Typography variant="h1" align="center">Wordle Solver</Typography>
-        </Grid>
-        {guesses.map((guess, guessNumber) => <Grid item xs={12} key={guessNumber}>
+        {[...Array(6)].map((_, guessNumber) => <Grid item xs={12} key={guessNumber}>
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
-            <Stack direction={'row'} spacing={1}>
-              {guess.map((char, charIndex) => <Box key={charIndex} sx={{...stylesForLetter[char.result], width: 62, height: 62, display: 'inline-flex', alignItems: 'center', cursor: 'pointer', fontWeight: 'bold', fontSize: '2rem', justifyContent: 'center'}} onClick={() => toggleGuessState(guessNumber, charIndex)}>{char.letter.toLocaleUpperCase()}</Box>)}
-            </Stack>
+            <Row guess={guesses[guessNumber]} onClick={(charIndex) => toggleGuessState(guessNumber, charIndex)}/>
           </Box>
         </Grid>)}
         <Grid item xs={12}>
