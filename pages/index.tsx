@@ -68,7 +68,7 @@ const Home: NextPage = () => {
 
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Typography variant="h1" align="center">Super Janky Wordle Solver</Typography>
+          <Typography variant="h1" align="center">Wordle Solver</Typography>
         </Grid>
         {guesses.map((guess, guessNumber) => <Grid item xs={12} key={guessNumber}>
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
