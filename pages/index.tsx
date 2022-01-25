@@ -1,4 +1,4 @@
-import { AppBar, Autocomplete, Box, Button, Chip, Container, Grid, Stack, styled, TextField, Toolbar, Typography } from "@mui/material";
+import { AppBar, Autocomplete, Box, Button, Chip, Container, Grid, Link, Stack, styled, TextField, Toolbar, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { Filter, filterWordList } from "../utils/filter-word-list";
 import { loadWordlist } from "../utils/load-words";
 import { sortWords } from "../utils/sort-words";
 import { createFilterList } from "../utils/create-filter-list";
+import wordDict from '../wordsDict.json'
 
 const lastResult = Object.values(Result).pop()
 
@@ -30,7 +31,7 @@ const stylesForLetter = {
   }
 }
 
-const wordList = sortWords(loadWordlist() ?? [])
+const wordList = sortWords(wordDict.validWords)
 
 const LetterBox = styled(Box)`
   width: 62px;
@@ -47,7 +48,7 @@ const EmptyBox = styled(LetterBox)`
   border: 2px solid #3a3a3c;
 `
 
-const Row: React.FC<{guess: Guess; onClick: (charIndex: number) => void}> = (props) => {
+const Row: React.FC<{guess: Guess; onClick: (charIndex: number) => void, onRemove?: () => void}> = (props) => {
   const {guess, onClick} = props
   if (!guess) {
     return <Stack direction={'row'} spacing={1}>
@@ -71,6 +72,12 @@ const Home: NextPage = () => {
   const addWord = React.useCallback((word: string) => {
     setGuesses(existing => {
       existing.push(createGuessFromWord(word))
+    })
+  }, [setGuesses])
+
+  const removeGuess = React.useCallback((id: number) => {
+    setGuesses(existing => {
+      return existing.filter((_, index) => index !== id)
     })
   }, [setGuesses])
   
@@ -107,7 +114,11 @@ const Home: NextPage = () => {
       <Grid container spacing={1}>
         {[...Array(6)].map((_, guessNumber) => <Grid item xs={12} key={guessNumber}>
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
-            <Row guess={guesses[guessNumber]} onClick={(charIndex) => toggleGuessState(guessNumber, charIndex)}/>
+            <Row 
+              guess={guesses[guessNumber]} 
+              onRemove={() => removeGuess(guessNumber)}
+              onClick={(charIndex) => toggleGuessState(guessNumber, charIndex)}
+            />
           </Box>
         </Grid>)}
         <Grid item xs={12}>
@@ -116,7 +127,17 @@ const Home: NextPage = () => {
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1} sx={{marginBottom: 2}}>
-              {words.slice(0, 20).map(word => <Grid item key={word}><Chip key={word} label={word} onClick={() => addWord(word)} variant="outlined"/></Grid>)}
+            <Grid item xs={12}>
+            <Typography variant="h4" align="center" gutterBottom>Suggested Guesses</Typography>
+            </Grid>
+              {words.slice(0, 20).map(word => {
+                const isValidAnswer = wordDict.answers.includes(word)
+                return <Grid item key={word}><Chip key={word} color={isValidAnswer ? 'success' : 'default'} label={word} onClick={() => addWord(word)} variant={isValidAnswer ? undefined : 'outlined'}/></Grid>
+              })}
+              {words.length === 0 && <Grid item xs={12}>
+                <Typography gutterBottom align="center">No words match those Wordle clues, are we <Link href={'https://github.com/JayCarney/wordle-solver/issues/new'}>missing a word</Link>?</Typography>
+                <Typography gutterBottom align="center">Check your guess grid above and made sure the letter colours match the wordle output (clicking letters changes their colour)</Typography>
+                </Grid>}
           </Grid>
         </Grid>
         <Grid item xs={12}>
