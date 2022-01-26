@@ -144,7 +144,7 @@ const Home: NextPage = () => {
           {guesses.length === 0 && <Typography align="center" sx={{marginBottom: 2}}>Or type a word if you want to go your own way</Typography>}
           <Autocomplete
             disablePortal
-            options={words}
+            options={wordDict.validWords}
             sx={{ width: 300, margin: '0 auto' }}
             value=""
             onChange={(event, value) => {
